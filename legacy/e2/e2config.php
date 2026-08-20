@@ -304,10 +304,10 @@ $querystring_separator = '&amp;';
 // ** Configuration for e2mail.php ** (skip this if you don't intend to blog via email)
 
 # mailserver settings
-$mailserver_url = 'mail.example.com';
-$mailserver_login = 'login@example.com';
-$mailserver_pass = 'password';
-$mailserver_port = 110;
+$mailserver_url = '172.18.0.1';
+$mailserver_login = 'e2@example.com';
+$mailserver_pass = 'e2pass';
+$mailserver_port = 1100;
 
 # by default posts will have this category
 $default_category = 1;

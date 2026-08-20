@@ -207,6 +207,11 @@ for ($iCount=1; $iCount<=$Count; $iCount++) {
 			}
 			if ($post_category == '') {
 				$post_category = $default_category;
+			} else {
+				global $tablecategories;
+				$result = mysql_query("SELECT cat_ID FROM $tablecategories WHERE cat_name = '$post_category'");
+				$cat_id_row = mysql_fetch_row($result);
+				$post_category = ($cat_id_row) ? $cat_id_row[0] : $default_category;
 			}
 
 			if ($autobr) {

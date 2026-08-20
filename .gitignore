@@ -1,1 +1,18 @@
+# Dependencies
+/vendor
+/node_modules
+
+# Build artifacts
+*.zip
+
+# Local state
 lastpost.id
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp

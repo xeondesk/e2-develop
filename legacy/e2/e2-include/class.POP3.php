@@ -52,8 +52,8 @@ class POP3 {
 		}
 		$lines = array();
 		while (($line = fgets($this->connection, 1024)) !== false) {
-			$line = rtrim($line, "\r\n");
-			if ($line == '.') {
+			$line = str_replace("\r\n", "\n", $line);
+			if (($line == '.') || ($line == ".\n")) {
 				break;
 			}
 			if (substr($line, 0, 1) == '.') {
