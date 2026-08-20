@@ -16,3 +16,6 @@ lastpost.id
 .idea/
 .vscode/
 *.swp
+
+# Test cache
+.phpunit.result.cache
