@@ -68,9 +68,9 @@ break;
 case "login":
 
 	if(!empty($HTTP_POST_VARS)) {
-		$log = $HTTP_POST_VARS["log"];
-		$pwd = $HTTP_POST_VARS["pwd"];
-		$redirect_to = $HTTP_POST_VARS["redirect_to"];
+		$log = (isset($HTTP_POST_VARS["log"])) ? $HTTP_POST_VARS["log"] : '';
+		$pwd = (isset($HTTP_POST_VARS["pwd"])) ? $HTTP_POST_VARS["pwd"] : '';
+		$redirect_to = (isset($HTTP_POST_VARS["redirect_to"])) ? $HTTP_POST_VARS["redirect_to"] : '';
 	}
 
 	function login() {
@@ -243,7 +243,7 @@ break;
 
 case "retrievepassword":
 
-	$user_login = $HTTP_POST_VARS["user_login"];
+	$user_login = (isset($HTTP_POST_VARS["user_login"])) ? $HTTP_POST_VARS["user_login"] : '';
 	$user_data = get_userdatabylogin($user_login);
 	$user_email = $user_data["user_email"];
 	$user_pass = $user_data["user_pass"];
@@ -278,6 +278,10 @@ default:
 		global $user_login,$user_pass_md5,$user_ID;
 
 		$userdata = get_userdatabylogin($user_login);
+
+		if (!is_array($userdata) || empty($userdata["user_pass"])) {
+			return false;
+		}
 
 		if ($user_pass_md5 != md5($userdata["user_pass"])) {
 			return false;
