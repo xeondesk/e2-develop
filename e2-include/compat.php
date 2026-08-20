@@ -107,6 +107,12 @@ if (!defined('E2_COMPAT_LOADED')) {
 			return mysqli_insert_id($link);
 		}
 
+		function mysql_affected_rows($link = null) {
+			if (!$link) { $link = $GLOBALS['__e2dbh']; }
+			if (!$link) { return 0; }
+			return mysqli_affected_rows($link);
+		}
+
 		function mysql_error($link = null) {
 			if (!$link) { $link = $GLOBALS['__e2dbh']; }
 			if (!$link) { return mysqli_connect_error(); }
