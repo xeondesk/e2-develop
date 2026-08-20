@@ -1,0 +1,1 @@
+# HTTP\nPublic HTTP/API boundary. Keep transport concerns separate from domain logic.\n

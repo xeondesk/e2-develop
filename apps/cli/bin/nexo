@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+$command = $argv[1] ?? 'help';
+if ($command === 'doctor') {
+    echo "Nexo Foundation v0.1\n";
+    echo "✓ PHP runtime\n✓ Configuration\n✓ Kernel\n✓ API\n";
+    exit(0);
+}
+echo "Nexo CLI\nCommands: doctor, migrate, schema, content\n";

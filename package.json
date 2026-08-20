@@ -1,0 +1,1 @@
+{"name":"nexo","private":true,"packageManager":"pnpm@10.0.0","scripts":{"test":"phpunit","lint":"echo 'lint placeholder'","typecheck":"echo 'typecheck placeholder'"}}

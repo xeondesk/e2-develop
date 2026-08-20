@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS content_entries (
+  id UUID PRIMARY KEY,
+  type VARCHAR(120) NOT NULL,
+  status VARCHAR(40) NOT NULL DEFAULT 'draft',
+  data JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

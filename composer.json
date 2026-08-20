@@ -1,0 +1,40 @@
+{
+  "name": "nexo/nexo",
+  "type": "project",
+  "require": {
+    "php": "^8.4",
+    "ext-pdo": "*",
+    "ext-json": "*",
+    "psr/container": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Nexo\\Kernel\\": "packages/kernel/src/",
+      "Nexo\\Config\\": "packages/config/src/",
+      "Nexo\\Container\\": "packages/container/src/",
+      "Nexo\\Contracts\\": "packages/contracts/src/",
+      "Nexo\\Domain\\": "packages/domain/src/",
+      "Nexo\\Database\\": "packages/database/src/",
+      "Nexo\\Schema\\": "packages/schema/src/",
+      "Nexo\\Content\\": "packages/content/src/",
+      "Nexo\\Events\\": "packages/events/src/",
+      "Nexo\\Identity\\": "packages/identity/src/",
+      "Nexo\\Authorization\\": "packages/authorization/src/",
+      "Nexo\\Http\\": "packages/http/src/",
+      "Nexo\\Observability\\": "packages/observability/src/",
+      "Nexo\\Api\\": "apps/api/src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Nexo\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}

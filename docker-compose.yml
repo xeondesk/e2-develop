@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      DB_DSN: pgsql:host=postgres;port=5432;dbname=nexo
+      DB_USER: nexo
+      DB_PASSWORD: nexo
+    depends_on: [postgres]
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: nexo
+      POSTGRES_USER: nexo
+      POSTGRES_PASSWORD: nexo
+    ports: ["5432:5432"]
