@@ -51,6 +51,7 @@
 	
 } else {
 
+$tb_id = '';
 if (!empty($HTTP_GET_VARS['tb_id'])) {
 	// trackback is done by a GET
 	$tb_id = $HTTP_GET_VARS['tb_id'];

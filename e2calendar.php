@@ -57,6 +57,12 @@ require_once("$e2inc/e2functions.php");
 require_once("$e2inc/e2vars.php");
 dbconnect();
 
+$time_difference = get_settings('time_difference');
+$start_of_week = (get_settings('start_of_week') != '') ? get_settings('start_of_week') : 1;
+if (!isset($querycount)) {
+	$querycount = 0;
+}
+
 if (isset($calendar) && ($calendar != '')) {
 	$thisyear = substr($calendar,0,4);
 	$thismonth = substr($calendar,4,2);
@@ -106,7 +112,7 @@ if ($ak_use_arrows == 1) {
 		$ak_previous_month_link = $ak_previous_month_active;
 	}
 	
-	if (mktime(0,0,0,$ak_next_month,1,$ak_next_year) > mktime()) {
+	if (mktime(0,0,0,$ak_next_month,1,$ak_next_year) > time()) {
 		$ak_next_month_link = $ak_next_month_dim;
 	}
 	else {

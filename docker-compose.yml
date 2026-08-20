@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: e2-db
+    command: --sql-mode=NO_ENGINE_SUBSTITUTION
+    environment:
+      MYSQL_DATABASE: e2
+      MYSQL_USER: e2
+      MYSQL_PASSWORD: e2pass
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build: .
+    container_name: e2-web
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/var/www/html
+
+volumes:
+  dbdata:

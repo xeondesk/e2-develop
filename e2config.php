@@ -13,7 +13,7 @@
 # $blogfilename is the name of the default file for your blog
 # $blogname is the name of your blog
 
-$siteurl = 'http://example.com';
+$siteurl = 'http://localhost:8080';
 $blogfilename = 'index.php';
 $blogname = "my weblog";
 $blogdescription = "babblings !";
@@ -32,11 +32,11 @@ $use_cafelogping = 0;    # set this to 1 if you do have a Cafelog ID
 # $pathserver is where you have uploaded e2: for example, 'http://mydomain.com' (no ending slash !)
 #   by default e2 is set to run in the folder your blog resides, same as $siteurl
 
-$pathserver = 'http://example.com';
+$pathserver = 'http://localhost:8080';
 
 
 # your email (obvious uh ?)
-$admin_email = 'you@example.com';
+$admin_email = 'admin@localhost';
 
 
 # set this to 0 or 1, whether you want new users to be able to post entries once they registered
@@ -56,9 +56,9 @@ $start_of_week = 1;
 
 # fill with your database details
 $dbname = 'e2';			// the name of the database
-$dbhost = 'localhost';		// 99% chances you won't need to change this value
-$dbusername = 'user';			// your MySQL username
-$dbpassword = 'pass';		// ...and password
+$dbhost = 'db';		// 99% chances you won't need to change this value
+$dbusername = 'e2';			// your MySQL username
+$dbpassword = 'e2pass';		// ...and password
 
 # database tables' names (change them if you want to have multiple e2's in a single database)
 $tableposts = 'e2posts';

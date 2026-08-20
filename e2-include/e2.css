@@ -1,0 +1,54 @@
+/* e2 admin area stylesheet */
+body {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 12px;
+	background-color: #ffffff;
+	color: #000000;
+	margin: 0;
+	padding: 0;
+}
+
+td.menutop {
+	padding: 4px 8px;
+	background-color: #eeeeee;
+	border-bottom: 1px solid #cccccc;
+	font-size: 12px;
+}
+
+td.menutop a {
+	color: #006699;
+	text-decoration: none;
+}
+
+td.menutop a:hover {
+	text-decoration: underline;
+}
+
+.panelbody {
+	padding: 12px;
+}
+
+.panelbody a {
+	color: #006699;
+}
+
+textarea, input, select {
+	background-color: #f0f0f0;
+	border: 1px solid #cccccc;
+	padding: 2px;
+	margin: 1px;
+}
+
+.postform {
+	background-color: #ffffff;
+	border: 1px solid #999999;
+}
+
+table.tabletoprow, td.tabletoprow {
+	background-color: #dddddd;
+	font-weight: bold;
+}
+
+a:link, a:visited {
+	color: #006699;
+}
