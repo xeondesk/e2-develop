@@ -31,7 +31,7 @@ final class Connection
         return $this->pdo->exec($sql);
     }
 
-    public function lastInsertId(string $name = null): string|false
+    public function lastInsertId(?string $name = null): string|false
     {
         return $this->pdo->lastInsertId($name);
     }

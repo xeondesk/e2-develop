@@ -7,6 +7,7 @@ services:
       DB_USER: nexo
       DB_PASSWORD: nexo
     depends_on: [postgres]
+    volumes: [".:/app"]
   postgres:
     image: postgres:17
     environment:

@@ -2,10 +2,169 @@
 <?php
 declare(strict_types=1);
 
-$command = $argv[1] ?? 'help';
-if ($command === 'doctor') {
-    echo "Nexo Foundation v0.1\n";
-    echo "✓ PHP runtime\n✓ Configuration\n✓ Kernel\n✓ API\n";
-    exit(0);
+$baseDir = __DIR__;
+while (!is_file($baseDir . '/vendor/autoload.php') && $baseDir !== '/') {
+    $baseDir = dirname($baseDir);
 }
-echo "Nexo CLI\nCommands: doctor, migrate, schema, content\n";
+require_once $baseDir . '/vendor/autoload.php';
+
+use Nexo\Api\Application;
+use Nexo\Config\Config;
+use Nexo\Config\Configuration;
+use Nexo\Config\Environment;
+use Nexo\Database\Connection;
+use Nexo\Database\Migration\MigrationRepository;
+use Nexo\Database\Migration\MigrationRunner;
+use Nexo\Database\PdoTransactionManager;
+
+$command = $argv[1] ?? 'help';
+if (in_array($command, ['schema', 'content', 'plugin', 'user'], true) && isset($argv[2]) && in_array($argv[2], ['list', 'create'], true)) {
+    $command .= ' ' . $argv[2];
+}
+
+function nexoApp(): Application
+{
+    return new Application();
+}
+
+function nexoMigrations(): array
+{
+    return [
+        new \Nexo\Schema\Migration\CreateSchemasTable(),
+        new \Nexo\Content\Migration\CreateContentTables(),
+        new \Nexo\Events\Migration\CreateEventsTable(),
+        new \Nexo\Identity\Migration\CreateIdentityTables(),
+        new \Nexo\Authorization\Migration\CreateAuthorizationTables(),
+        new \Nexo\Workflow\Migration\CreateWorkflowsTable(),
+    ];
+}
+
+switch ($command) {
+    case 'doctor':
+        echo "Nexo Foundation v0.1\n";
+        echo "✓ PHP " . PHP_VERSION . "\n";
+        echo "✓ Configuration\n";
+        echo "✓ Kernel\n";
+        echo "✓ API\n";
+        try {
+            $app = nexoApp();
+            $app->boot();
+            $app->getContainer()->get(Connection::class);
+            echo "✓ Database\n";
+        } catch (\Throwable $e) {
+            echo "✗ Database: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+        exit(0);
+
+    case 'migrate':
+        $app = nexoApp();
+        $app->boot();
+        $connection = $app->getContainer()->get(Connection::class);
+        $runner = new MigrationRunner(
+            $connection,
+            new PdoTransactionManager($connection),
+            new MigrationRepository($connection)
+        );
+        $migrations = nexoMigrations();
+        $direction = $argv[2] ?? 'up';
+        if ($direction === 'rollback') {
+            $done = $runner->rollback($migrations, (int) ($argv[3] ?? 1));
+            echo "Rolled back: " . implode(', ', $done) . "\n";
+        } else {
+            $done = $runner->migrate($migrations);
+            echo "Migrated: " . (count($done) ? implode(', ', $done) : '(nothing)') . "\n";
+        }
+        exit(0);
+
+    case 'migrate:status':
+        $app = nexoApp();
+        $app->boot();
+        $connection = $app->getContainer()->get(Connection::class);
+        $runner = new MigrationRunner(
+            $connection,
+            new PdoTransactionManager($connection),
+            new MigrationRepository($connection)
+        );
+        $migrations = nexoMigrations();
+        foreach ($runner->status($migrations) as $row) {
+            echo ($row['executed'] ? '[x] ' : '[ ] ') . $row['version'] . ' ' . $row['name'] . "\n";
+        }
+        exit(0);
+
+    case 'plugin list':
+        $app = nexoApp();
+        $app->boot();
+        $pluginsPath = realpath(__DIR__ . '/../../../plugins');
+        $runtime = new \Nexo\Plugin\PluginRuntime($pluginsPath ?: '', $app->version());
+        foreach ($runtime->load($app->getContainer()) as $name => $plugin) {
+            echo $name . ' ' . $plugin->manifest()->version . ' — ' . $plugin->manifest()->description . "\n";
+        }
+        exit(0);
+
+    case 'schema list':
+        $app = nexoApp();
+        $app->boot();
+        $repo = $app->getContainer()->get(\Nexo\Schema\SchemaRepository::class);
+        foreach ($repo->findAll() as $schema) {
+            echo $schema->id() . ' v' . $schema->version() . ' ' . $schema->label() . "\n";
+        }
+        exit(0);
+
+    case 'content list':
+        $app = nexoApp();
+        $app->boot();
+        $repo = $app->getContainer()->get(\Nexo\Content\ContentRepository::class);
+        $items = isset($argv[3]) ? $repo->findByType($argv[3]) : $repo->findAll();
+        foreach ($items as $entry) {
+            echo $entry->id() . ' [' . $entry->status()->value . '] ' . $entry->typeId() . "\n";
+        }
+        exit(0);
+
+    case 'content create':
+        if (($argv[3] ?? null) === null || ($argv[4] ?? null) === null) {
+            echo "Usage: nexo content create <typeId> '<json>'\n";
+            exit(1);
+        }
+        $app = nexoApp();
+        $app->boot();
+        $data = json_decode($argv[4], true);
+        if (!is_array($data)) {
+            echo "Error: data must be a JSON object\n";
+            exit(1);
+        }
+        $entry = new \Nexo\Content\ContentEntry(
+            \Nexo\Content\ContentId::generate(),
+            $argv[3],
+            $data,
+            \Nexo\Content\ContentStatus::DRAFT
+        );
+        $app->getContainer()->get(\Nexo\Content\ContentRepository::class)->save($entry);
+        echo $entry->id() . "\n";
+        exit(0);
+
+    case 'health':
+        $app = nexoApp();
+        $app->boot();
+        try {
+            $app->getContainer()->get(Connection::class);
+            echo "healthy\n";
+            exit(0);
+        } catch (\Throwable $e) {
+            echo "unhealthy: " . $e->getMessage() . "\n";
+            exit(1);
+        }
+
+    case 'user list':
+        $app = nexoApp();
+        $app->boot();
+        $repo = $app->getContainer()->get(\Nexo\Identity\UserRepository::class);
+        foreach ($repo->findAll() as $user) {
+            echo $user->id() . ' ' . $user->email() . ' [' . $user->status()->value . "]\n";
+        }
+        exit(0);
+
+    default:
+        echo "Nexo CLI\nCommands: doctor, health, migrate [up|rollback], migrate:status, schema list, content list [type], content create <type> '<json>', user list, plugin list\n";
+        exit(0);
+}

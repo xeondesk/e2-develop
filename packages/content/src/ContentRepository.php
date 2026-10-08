@@ -13,12 +13,6 @@ interface ContentRepository extends Repository
 
     public function findByStatus(ContentStatus $status): iterable;
 
-    public function save(ContentEntry $entry): void;
-
-    public function delete(ContentId $id): void;
-
-    public function exists(ContentId $id): bool;
-
     /** @return Revision[] */
     public function findRevisions(ContentId $contentId): array;
 

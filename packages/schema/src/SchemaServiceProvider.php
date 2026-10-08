@@ -7,7 +7,7 @@ use Nexo\Config\Config;
 use Nexo\Database\Connection;
 use Nexo\Database\ConnectionFactory;
 use Nexo\Database\PdoTransactionManager;
-use Nexo\Database\TransactionManager;
+use Nexo\Contracts\TransactionManager;
 use Nexo\Container\Container;
 use Nexo\Container\ServiceProvider;
 

@@ -8,7 +8,7 @@ final class Environment
     /**
      * @param array<string, string> $defaults
      */
-    public static function load(string $path = null, array $defaults = []): void
+    public static function load(?string $path = null, array $defaults = []): void
     {
         $file = $path ?? __DIR__ . '/../../../../.env';
 

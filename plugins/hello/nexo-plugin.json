@@ -1,0 +1,8 @@
+{
+  "name": "hello",
+  "version": "0.1.0",
+  "description": "Example plugin",
+  "class": "Nexo\\Plugins\\Hello\\HelloPlugin",
+  "nexo_version": "0.1.0",
+  "capabilities": ["boot"]
+}

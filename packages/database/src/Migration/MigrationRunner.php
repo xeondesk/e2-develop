@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Nexo\Database\Migration;
 
 use Nexo\Database\Connection;
-use Nexo\Database\TransactionManager;
+use Nexo\Contracts\TransactionManager;
 
 final class MigrationRunner
 {

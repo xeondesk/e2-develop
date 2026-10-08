@@ -13,15 +13,13 @@ final class MigrationRepository
 
     public function ensureTable(): void
     {
-        $sql = <<<SQL
-            CREATE TABLE IF NOT EXISTS " . self::TABLE . " (
-                version VARCHAR(50) PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                checksum VARCHAR(64) NOT NULL,
-                executed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-                execution_time_ms DOUBLE PRECISION NOT NULL
-            )
-        SQL;
+        $sql = "CREATE TABLE IF NOT EXISTS " . self::TABLE . " (
+            version VARCHAR(50) PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            checksum VARCHAR(64) NOT NULL,
+            executed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+            execution_time_ms DOUBLE PRECISION NOT NULL
+        )";
         $this->connection->exec($sql);
     }
 

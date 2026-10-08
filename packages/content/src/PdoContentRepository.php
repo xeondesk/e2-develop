@@ -5,7 +5,7 @@ namespace Nexo\Content;
 
 use Nexo\Database\Connection;
 use Nexo\Database\PdoRepository;
-use Nexo\Database\TransactionManager;
+use Nexo\Contracts\TransactionManager;
 use Nexo\Domain\Result;
 
 final class PdoContentRepository extends PdoRepository implements ContentRepository
@@ -22,7 +22,7 @@ final class PdoContentRepository extends PdoRepository implements ContentReposit
 
     protected function mapRow(array $row): object
     {
-        $contentId = new ContentId($row['id']);
+        $contentId = ContentId::create($row['id']);
         $data = json_decode($row['data'], true) ?? [];
         $status = ContentStatus::from($row['status']);
         
@@ -156,8 +156,13 @@ final class PdoContentRepository extends PdoRepository implements ContentReposit
         });
     }
 
-    public function save(ContentEntry $entry): void
+    public function save(object $entity): void
     {
+        if (!$entity instanceof ContentEntry) {
+            throw new \InvalidArgumentException('Entity must be a ContentEntry');
+        }
+
+        $entry = $entity;
         $this->transactionManager->run(function () use ($entry) {
             // Save the main entry
             parent::save($entry);

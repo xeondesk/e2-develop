@@ -10,4 +10,14 @@ interface Config
     public function has(string $key): bool;
 
     public function all(): array;
+
+    public function getString(string $key, string $default = ''): string;
+
+    public function getInt(string $key, int $default = 0): int;
+
+    public function getBool(string $key, bool $default = false): bool;
+
+    public function getFloat(string $key, float $default = 0.0): float;
+
+    public function getArray(string $key, array $default = []): array;
 }

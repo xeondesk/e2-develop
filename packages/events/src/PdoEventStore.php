@@ -6,7 +6,7 @@ namespace Nexo\Events;
 use Nexo\Contracts\Event;
 use Nexo\Database\Connection;
 use Nexo\Database\PdoRepository;
-use Nexo\Database\TransactionManager;
+use Nexo\Contracts\TransactionManager;
 use Nexo\Domain\Result;
 
 final class PdoEventStore extends PdoRepository implements EventStore

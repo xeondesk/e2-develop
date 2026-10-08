@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 namespace Nexo\Database\Migration;
+use Nexo\Database\Connection;
+
 
 interface Migration
 {

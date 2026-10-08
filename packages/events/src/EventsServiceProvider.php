@@ -15,7 +15,7 @@ final class EventsServiceProvider implements ServiceProvider
         $container->singleton(EventStore::class, function (Container $c) {
             return new PdoEventStore(
                 $c->get(\Nexo\Database\Connection::class),
-                $c->get(\Nexo\Database\TransactionManager::class)
+                $c->get(\Nexo\Contracts\TransactionManager::class)
             );
         });
     }

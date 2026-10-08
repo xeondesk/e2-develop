@@ -5,6 +5,7 @@ namespace Nexo\Database;
 
 use Nexo\Contracts\Repository;
 use Nexo\Domain\Identifier;
+use Nexo\Contracts\TransactionManager;
 
 abstract class PdoRepository implements Repository
 {
